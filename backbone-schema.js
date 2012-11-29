@@ -6,10 +6,16 @@
  * For details and documentation: https://github.com/redpie/backbone-schema
  * Depends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone
  */
-var Backbone = require('backbone'),
-    _ = require('underscore');
-
-(function(Backbone, _, undefined) {
+(function (factory) {
+  if (typeof exports === 'object') {
+    module.exports = factory(require('underscore'), require('backbone'));
+  } else if (typeof define === 'function' && define.amd) {
+    define(['underscore', 'backbone'], factory);
+  } else {
+    window.Backbone.Schema = factory(window._, window.Backbone);
+  }
+}(function (_, Backbone, undefined) {
+    var Schema = {};
 
     function log(){}
 
@@ -163,7 +169,7 @@ var Backbone = require('backbone'),
      * from JSON Schemas.
      * @constructor
      */
-    var SchemaFactory = Backbone.SchemaFactory = function SchemaFactory(options) {
+    var SchemaFactory = Schema.Factory = function SchemaFactory(options) {
 
         // Initialise the options object
         options = options || {};
@@ -202,15 +208,15 @@ var Backbone = require('backbone'),
 
         // Ensure the base model is of type SchemaModel
         if(options.model && !(typeOf(options.model, SchemaModel))) {
-            throw new Error("options.model MUST extend Backbone.SchemaModel");
+            throw new Error("options.model MUST extend Backbone.Schema.Model");
         }
         // Ensure the base model is of type SchemaCollection
         if(options.collection && !(typeOf(options.collection, SchemaCollection))) {
-            throw new Error("options.collection MUST extend Backbone.SchemaCollection");
+            throw new Error("options.collection MUST extend Backbone.Schema.Collection");
         }
         // Ensure the base model is of type SchemaValueCollection
         if(options.valueCollection && !(typeOf(options.valueCollection, SchemaValueCollection))) {
-            throw new Error("options.valueCollection MUST extend Backbone.SchemaValueCollection");
+            throw new Error("options.valueCollection MUST extend Backbone.Schema.ValueCollection");
         }
 
         // All models created by this factory will be of the provided type or SchemaModel
@@ -229,7 +235,7 @@ var Backbone = require('backbone'),
          * particular schema which is useful when you wish to provide custom
          * functionality for schemas which may be embedded in other schemas.
          * @param  {String|Object} schema Provide a schema id or a schema object
-         * @param  {Backbone.SchemaModel|Backbone.SchemaCollection|Backbone.SchemaValueCollection} model  Provide a model or collection to associate with this schema
+         * @param  {Backbone.Schema.Model|Backbone.Schema.Collection|Backbone.Schema.ValueCollection} model  Provide a model or collection to associate with this schema
          * @return {this}
          */
         register: function(schema, model) {
@@ -693,11 +699,11 @@ var Backbone = require('backbone'),
     };
 
     /**
-     * Backbone.SchemaModel provides a schema aware Backbone.Model
+     * Backbone.Schema.Model provides a schema aware Backbone.Model
      * @constructor
      * @extends Backbone.Model
      */
-    var SchemaModel = Backbone.SchemaModel = Backbone.Model.extend({
+    var SchemaModel = Schema.Model = Backbone.Model.extend({
 
         /**
          * JSON Schema associated with this model
@@ -1277,10 +1283,10 @@ var Backbone = require('backbone'),
     SchemaModel.extend = extend;
 
     /**
-     * Backbone.SchemaCollection provides a schema aware Backbone.Collection
+     * Backbone.Schema.Collection provides a schema aware Backbone.Collection
      * @extends Backbone.Collection
      */
-    var SchemaCollection = Backbone.SchemaCollection = Backbone.Collection.extend({
+    var SchemaCollection = Schema.Collection = Backbone.Collection.extend({
 
         /**
          * JSON Schema associated with this model
@@ -1524,11 +1530,11 @@ var Backbone = require('backbone'),
     SchemaCollection.extend = extend;
 
     /**
-     * Backbone.SchemaValueCollection provides a Backbone.SchemaCollection that contains simple value types rather than models
+     * Backbone.Schema.ValueCollection provides a Backbone.Schema.Collection that contains simple value types rather than models
      * @constructor
      * @extends Backbone.Collection
      */
-    var SchemaValueCollection = Backbone.SchemaValueCollection = SchemaCollection.extend({
+    var SchemaValueCollection = Schema.ValueCollection = SchemaCollection.extend({
 
         /**
          * declare the model as undefined as we don't use models in this implementation
@@ -1979,12 +1985,10 @@ var Backbone = require('backbone'),
      * Provides access to otherwise private objects. Used from tests
      * @type {Object}
      */
-    Backbone.SchemaTestHelper = {
+    Schema.TestHelper = {
         Validators: Validators,
         JSONPointer: JSONPointer
     };
 
-}(Backbone, _));
-
-
-
+    return Schema;
+}));

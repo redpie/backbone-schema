@@ -1,6 +1,8 @@
 Backbone.Schema
 ===============
 
+[![Build Status](https://secure.travis-ci.org/redpie/backbone-schema.png?branch=master)](https://travis-ci.org/redpie/backbone-schema)
+
 Backbone.Schema allows developers to specify rich [Backbone](https://github.com/documentcloud/backbone) models and collections with [JSON-Schema](http://json-schema.org).
 
 ## Features
