@@ -68,8 +68,8 @@ var PersonModel = schemaFactory.create({
 });
 
 var person = new PersonModel({
-    name: "Marcus",
-    surname: "Mac Innes"
+    "name": "Marcus",
+    "surname": "Mac Innes"
 });
 ```
 
@@ -102,8 +102,8 @@ var PersonModel = schemaFactory.create({
 }, PersonModelBase);
 
 var person = new Person({
-    name: "Marcus",
-    surname: "Mac Innes"
+    "name": "Marcus",
+    "surname": "Mac Innes"
 });
 
 var fullname = person.fullname(); // should be "Marcus Mac Innes"
@@ -133,8 +133,8 @@ schemaFactory.register({
 });
 ```
 
-This method is useful if you want to register all your application schemas 
-when your application starts. Since this only caches schemas and does 
+This method is useful if you want to register all your application schemas
+when your application starts. Since this only caches schemas and does
 no real work, it returns quickly and doesn't delay your application
 from starting quickly.
 
@@ -253,8 +253,8 @@ var person = schemaFactory.createInstance({
     }
 }, {
     // Model attributes
-    name: "Marcus",
-    surname: "Mac Innes"
+    "name": "Marcus",
+    "surname": "Mac Innes"
 }, {
     // Model options
 });
@@ -267,7 +267,7 @@ Like the create() method, createInstance() also allows you to specify just the s
 JSON Schemas can contains child objects and arrays which are automatically
 converted to nested models and collections during the create process.
 
-Nested models and collections can be initialized just like regular attributes in the Model or Collection constructor. 
+Nested models and collections can be initialized just like regular attributes in the Model or Collection constructor.
 
 #### One to One Relations
 
@@ -295,10 +295,10 @@ var PersonModel = schemaFactory.create({
 });
 
 var person = new PersonModel({
-    name: "Marcus",
-    surname: "Mac Innes",
-    employer: {
-        name: "Redpie"
+    "name": "Marcus",
+    "surname": "Mac Innes",
+    "employer": {
+        "name": "Redpie"
     }
 });
 
@@ -335,11 +335,11 @@ var PersonModel = schemaFactory.create({
 });
 
 var person = new PersonModel({
-    name: "Marcus",
-    surname: "Mac Innes",
-    employers: [
-        { name: "Redpie" },
-        { name: "Jargon" }
+    "name": "Marcus",
+    "surname": "Mac Innes",
+    "employers": [
+        { "name": "Redpie" },
+        { "name": "Jargon" }
     ]
 });
 
@@ -348,7 +348,7 @@ var firstEmployerName = person.get('employers').at(0).get('name'); // should be 
 
 #### Lazy Initialization
 
-Empty nested models and collections are lazy initialized, 
+Empty nested models and collections are lazy initialized,
 in other words they are not initialized until they are accessed which
 enhances performance and helps minimize memory consumption.
 
@@ -408,7 +408,7 @@ var person = new PersonModel();
 // the address attribute starts off undefined
 var hasAddressModel = person.attributes['address'] === undefined; // false
 // returns a new AddressSchemaModel
-get.get('address'); 
+get.get('address');
 // You can now see the address attribute is initialized
 hasAddressModel = person.attributes['address'] === undefined; // true
 
@@ -420,7 +420,7 @@ hasPhoneNumbers = person.attributes['phoneNumbers'] === undefined; // true
 
 ### Value Based Collections
 
-The native Backbone.Collection only supports collections of models and 
+The native Backbone.Collection only supports collections of models and
 cannot currently be used to represent a collection of value types such as strings, numbers or booleans.
 
 To overcome this limitation we introduced Backbone.SchemaValueCollection (which extends Backbone.SchemaCollection) to allow you to create collections like:
@@ -455,15 +455,15 @@ var PhotoModel = schemaFactory.create({
 });
 
 var photo = new PhotoModel({
-    title: "A Photo Of Me & Zak",
-    url: "http://pix.ie/marcus/2924495",
-    tags: ["marcus", "zak", "paris"]
+    "title": "A Photo Of Me & Zak",
+    "url": "http://pix.ie/marcus/2924495",
+    "tags": ["marcus", "zak", "paris"]
 });
 
 var tag3 = photo.get('tags').at(2); // Should be "paris"
 ```
 
-SchemaValueCollections behave exactly the same way as collections with a few exceptions. 
+SchemaValueCollections behave exactly the same way as collections with a few exceptions.
 The following collection methods are not supported:
 
 * pluck
@@ -471,7 +471,7 @@ The following collection methods are not supported:
 
 ### Creating Models from Schemas that Contain "Self References"
 
-A self-reference is where the schema contains, you guessed it, a reference to itself. 
+A self-reference is where the schema contains, you guessed it, a reference to itself.
 In JSON Schema this takes the form:
 
 ```javascript
@@ -503,11 +503,11 @@ var PersonModel = schemaFactory.create({
 });
 
 var person = new PersonModel({
-    name: "Marcus",
-    surname: "Mac Innes",
-    spouse: {
-        name: "Kadija",
-        surname: "Duiri"
+    "name": "Marcus",
+    "surname": "Mac Innes",
+    "spouse": {
+        "name": "Kadija",
+        "surname": "Duiri"
     }
 });
 
@@ -516,7 +516,7 @@ var spouseName = person.get('spouse').get('name'); // should be "Kadija"
 
 ### Creating Models from Schemas that References Other Schemas
 
-It is usual break schemas down into small units which can be reused. 
+It is usual break schemas down into small units which can be reused.
 
 ```javascript
 var schemaFactory = new Backbone.SchemaFactory();
@@ -631,13 +631,13 @@ We can now use the models we just defined above to create instances as follows:
 
 ```javascript
 var person = new PersonModel({
-    id: 1234,
-    name: "Marcus"
+    "id": 1234,
+    "name": "Marcus"
 });
 
 var company = new CompanyModel({
-    id: 5678,
-    name: "Redpie"
+    "id": 5678,
+    "name": "Redpie"
 });
 
 person.set('employer', company);
@@ -660,11 +660,11 @@ console.log(JSON.stringify(person.toJSON());
 
 ```
 
-The circular reference in the data didn't cause the toJSON method any issues either. 
+The circular reference in the data didn't cause the toJSON method any issues either.
 When a circular reference is encountered during the toJSON processing, the second
 instance of the model simply outputs it's id property or is skipped if no id is defined.
 
-Another interesting feature of toJSON is that it only outputs attributes 
+Another interesting feature of toJSON is that it only outputs attributes
 that have been defined in the schema. All other attributes are ignored.
 
 ```javascript
@@ -684,9 +684,9 @@ var PersonModel = schemaFactory.create({
 });
 
 var person = new PersonModel({
-    name: "Marcus",
-    surname: "Mac Innes",
-    favoriteColor: "green"
+    "name": "Marcus",
+    "surname": "Mac Innes",
+    "favoriteColor": "green"
 });
 
 console.log(JSON.stringify(person.toJSON()));
