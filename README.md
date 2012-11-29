@@ -190,8 +190,8 @@ schemaFactory.register({
 var PersonModel = schemaFactory.create("/schemas/person");
 
 var person = new PersonModel({
-    name: "Marcus",
-    surname: "Mac Innes"
+    "name": "Marcus",
+    "surname": "Mac Innes"
 });
 ```
 
