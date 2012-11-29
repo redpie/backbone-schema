@@ -7,13 +7,13 @@
  * Depends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone
  */
 (function (factory) {
-  if (typeof exports === 'object') {
-    module.exports = factory(require('underscore'), require('backbone'));
-  } else if (typeof define === 'function' && define.amd) {
-    define(['underscore', 'backbone'], factory);
-  } else {
-    window.Backbone.Schema = factory(window._, window.Backbone);
-  }
+    if(typeof exports === 'object') {
+        module.exports = factory(require('underscore'), require('backbone'));
+    } else if(typeof define === 'function' && define.amd) {
+        define(['underscore', 'backbone'], factory);
+    } else {
+        window.Backbone.Schema = factory(window._, window.Backbone);
+    }
 }(function (_, Backbone, undefined) {
     var Schema = {};
 
