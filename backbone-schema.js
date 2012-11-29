@@ -6,13 +6,13 @@
  * For details and documentation: https://github.com/redpie/backbone-schema
  * Depends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone
  */
-(function (factory) {
+(function (moduleFactory) {
     if(typeof exports === 'object') {
-        module.exports = factory(require('underscore'), require('backbone'));
+        module.exports = moduleFactory(require('underscore'), require('backbone'));
     } else if(typeof define === 'function' && define.amd) {
-        define(['underscore', 'backbone'], factory);
+        define(['underscore', 'backbone'], moduleFactory);
     } else {
-        window.Backbone.Schema = factory(window._, window.Backbone);
+        window.Backbone.Schema = moduleFactory(window._, window.Backbone);
     }
 }(function (_, Backbone, undefined) {
     var Schema = {};
