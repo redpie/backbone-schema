@@ -602,9 +602,6 @@ factory.register({
         "name": {
             "type": "string"
         },
-        "surname": {
-            "type": "string"
-        },
         "address": {
             "$ref": "/schemas/phonenumber#"
         },
