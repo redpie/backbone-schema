@@ -577,12 +577,12 @@ factory.register({
             "type": "string"
         },
         "address": {
-            "$ref": "/schemas/phonenumber#"
+            "$ref": "/schemas/address#"
         },
         "phoneNumbers": {
             "type": "array",
             "items": {
-                "$ref": "/schemas/address#"
+                "$ref": "/schemas/phonenumber#"
             }
         },
         "employer": {
@@ -603,12 +603,12 @@ factory.register({
             "type": "string"
         },
         "address": {
-            "$ref": "/schemas/phonenumber#"
+            "$ref": "/schemas/address#"
         },
         "phoneNumbers": {
             "type": "array",
             "items": {
-                "$ref": "/schemas/address#"
+                "$ref": "/schemas/phonenumber#"
             }
         },
         "employees": {
