@@ -1,6 +1,8 @@
 Backbone.Schema
 ===============
 
+[![Build Status](https://secure.travis-ci.org/redpie/backbone-schema.png?branch=master)](https://travis-ci.org/redpie/backbone-schema)
+
 Backbone.Schema allows developers to specify rich [Backbone](https://github.com/documentcloud/backbone) models and collections with [JSON-Schema](http://json-schema.org).
 
 ## Features
@@ -25,20 +27,20 @@ Backbone.Schema allows developers to specify rich [Backbone](https://github.com/
 
 ## Usage and Examples
 
-### Backbone.SchemaFactory
+### Backbone.Schema.Factory
 
-The Backbone.SchemaFactory class provides methods to register schemas and create new models and collections directly from schema.
+The Backbone.Schema.Factory class provides methods to register schemas and create new models and collections directly from schema.
 
 The class should only be instantiated once per application:
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 ```
 
 You can pass application specific configuration in the options parameter:
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory({
+var factory = new Backbone.Schema.Factory({
     // My application's custom base model class
     model: SchemaModel.extend({ ... }),
 
@@ -49,12 +51,12 @@ var schemaFactory = new Backbone.SchemaFactory({
 
 ### Creating Model and Collection Types
 
-Use Backbone.SchemaFactory to create new model and collection types.
+Use Backbone.Schema.Factory to create new model and collection types.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -73,22 +75,22 @@ var person = new PersonModel({
 });
 ```
 
-As well as being able to provide Backbone.SchemaFactory with default base model
+As well as being able to provide Backbone.Schema.Factory with default base model
 and collection classes, you can also specify schema specific base classes.
 
-The only requirement is that model base classes extend Backbone.SchemaModel and
-collection base classes extend Backbone.SchemaCollection.
+The only requirement is that model base classes extend Backbone.Schema.Model and
+collection base classes extend Backbone.Schema.Collection.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModelBase = Backbone.SchemaModel.extend({
+var PersonModelBase = Backbone.Schema.Model.extend({
     fullname: function() {
         return this.get('name') + ' ' + this.get('surname');
     }
 });
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -109,7 +111,7 @@ var person = new Person({
 var fullname = person.fullname(); // should be "Marcus Mac Innes"
 ```
 
-***Note**: There is a requirement that model base classes extend Backbone.SchemaModel and collection base classes extend BackboneSchemaCollection.*
+***Note**: There is a requirement that model base classes extend Backbone.Schema.Model and collection base classes extend BackboneSchemaCollection.*
 
 ### Pre-Registering Schemas
 
@@ -117,9 +119,9 @@ Schemas can be pre-registered which is a handy way of telling Backbone.Schema
 to store them for future use.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-schemaFactory.register({
+factory.register({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -145,15 +147,15 @@ been previously either registered or created. More on this below...
 Similar to create, register allows you to specify a base class for the schema.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModelBase = Backbone.SchemaModel.extend({
+var PersonModelBase = Backbone.Schema.Model.extend({
     fullname: function() {
         return this.get('name') + ' ' + this.get('surname');
     }
 });
 
-schemaFactory.register({
+factory.register({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -171,9 +173,9 @@ Once a schema has been registered, you can create types using only the
 schema id, rather than having to specify the entire schema again:
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-schemaFactory.register({
+factory.register({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -187,7 +189,7 @@ schemaFactory.register({
 });
 
 // Create a Model using the pre-registered schema whose id is "/schemas/person"
-var PersonModel = schemaFactory.create("/schemas/person");
+var PersonModel = factory.create("/schemas/person");
 
 var person = new PersonModel({
     "name": "Marcus",
@@ -195,15 +197,15 @@ var person = new PersonModel({
 });
 ```
 
-### Backbone.SchemaFactory Type Caching
+### Backbone.Schema.Factory Type Caching
 If the schema has an id (recommended), the newly create type will be cached and
 re-used whenever that schema id is encountered again (schema ids must be
 unique).
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel1 = schemaFactory.create({
+var PersonModel1 = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -216,7 +218,7 @@ var PersonModel1 = schemaFactory.create({
     }
 });
 
-var PersonModel2 = schemaFactory.create({
+var PersonModel2 = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -238,9 +240,9 @@ You can create instantiated models and collections directly if you don't
 need to keep a reference to the type.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var person = schemaFactory.createInstance({
+var person = factory.createInstance({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -272,9 +274,9 @@ Nested models and collections can be initialized just like regular attributes in
 #### One to One Relations
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -308,9 +310,9 @@ var employerName = person.get('employer').get('name'); // should be "Redpie"
 #### One to Many Relations
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -353,9 +355,9 @@ in other words they are not initialized until they are accessed which
 enhances performance and helps minimize memory consumption.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -423,19 +425,19 @@ hasPhoneNumbers = person.attributes['phoneNumbers'] === undefined; // true
 The native Backbone.Collection only supports collections of models and
 cannot currently be used to represent a collection of value types such as strings, numbers or booleans.
 
-To overcome this limitation we introduced Backbone.SchemaValueCollection (which extends Backbone.SchemaCollection) to allow you to create collections like:
+To overcome this limitation we introduced Backbone.Schema.ValueCollection (which extends Backbone.Schema.Collection) to allow you to create collections like:
 
 ```
-var collection = new Backbone.SchemaValueCollection(['zero', one', 'two', 'three']);
+var collection = new Backbone.Schema.ValueCollection(['zero', one', 'two', 'three']);
 var two = collection.at(2); // Should be "two"
 ```
 
 This addition is important as JSON Schemas often contain arrays of value types. See "tags" in example below:
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PhotoModel = schemaFactory.create({
+var PhotoModel = factory.create({
     "id": "/schemas/photo",
     "type": "object",
     "properties": {
@@ -484,9 +486,9 @@ In the example below, the property "spouse" is referencing the person schema and
 person.get('spouse') will return another instance of PersonModel for spouse.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -519,10 +521,10 @@ var spouseName = person.get('spouse').get('name'); // should be "Kadija"
 It is usual break schemas down into small units which can be reused.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
 // Register a Phone Number
-schemaFactory.register({
+factory.register({
     "id": "/schemas/phonenumber",
     "type": "object",
     "properties": {
@@ -539,7 +541,7 @@ schemaFactory.register({
 });
 
 // Register an Address
-schemaFactory.register({
+factory.register({
     "id": "/schemas/address",
     "type": "object",
     "properties": {
@@ -559,7 +561,7 @@ schemaFactory.register({
 });
 
 // Register a Person
-schemaFactory.register({
+factory.register({
    "id": "/schemas/person",
    "type": "object",
    "properties": {
@@ -588,7 +590,7 @@ schemaFactory.register({
 });
 
 // Register a Company
-schemaFactory.register({
+factory.register({
    "id": "/schemas/company",
    "type": "object",
    "properties": {
@@ -619,8 +621,8 @@ schemaFactory.register({
     }
 });
 
-var PersonModel = schemaFactory.create("/schemas/person#");
-var CompanyModel = schemaFactory.create("/schemas/company#");
+var PersonModel = factory.create("/schemas/person#");
+var CompanyModel = factory.create("/schemas/company#");
 ```
 
 Notice the circular references in the schema, person contains an "employer" of type company and company contains "employees" of type person. No problem!
@@ -668,9 +670,9 @@ Another interesting feature of toJSON is that it only outputs attributes
 that have been defined in the schema. All other attributes are ignored.
 
 ```javascript
-var schemaFactory = new Backbone.SchemaFactory();
+var factory = new Backbone.Schema.Factory();
 
-var PersonModel = schemaFactory.create({
+var PersonModel = factory.create({
    "id": "/schemas/person",
    "type": "object",
    "properties": {

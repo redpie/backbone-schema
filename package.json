@@ -3,11 +3,19 @@
   "description"   : "Create Backbone models and collections from JSON Schema",
   "keywords"      : ["Backbone", "schema", "json", "jsonschema", "nested", "model", "collection"],
   "repository"    : "git://github.com/redpie/backbone-schema.git",
-  "author"        : "https://github.com/redpie/backbone-schema>",
+  "author"        : "Redpie",
   "contributors"  : "Listed at <https://github.com/redpie/backbone-schema/graphs/contributors>",
   "dependencies"  : {
-    "underscore": ">=1.4.2",
-    "backbone":   ">=0.9.2"
+    "backbone":   ">=0.9.2",
+    "underscore": ">=1.4.2"
+  },
+  "devDependencies": {
+    "mocha": "1.6.0",
+    "chai": "1.4.0",
+    "sinon": "1.5.2"
+  },
+  "scripts": {
+      "test": "./node_modules/.bin/mocha --recursive --reporter spec --ui bdd test/*.js"
   },
   "lib"           : ".",
   "main"          : "backbone-schema.js",
