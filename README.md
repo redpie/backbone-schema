@@ -42,10 +42,10 @@ You can pass application specific configuration in the options parameter:
 ```javascript
 var factory = new Backbone.Schema.Factory({
     // My application's custom base model class
-    model: SchemaModel.extend({ ... }),
+    model: Backbone.Schema.Model.extend({ ... }),
 
     // My application's custom base model class
-    collection: SchemaCollection.extend({ ... })
+    collection: Backbone.Schema.Collection.extend({ ... })
 });
 ```
 
@@ -111,7 +111,9 @@ var person = new Person({
 var fullname = person.fullname(); // should be "Marcus Mac Innes"
 ```
 
-***Note**: There is a requirement that model base classes extend Backbone.Schema.Model and collection base classes extend BackboneSchemaCollection.*
+***Note**: There is a requirement that model base classes extend
+Backbone.Schema.Model and collection base classes extend
+Backbone.Schema.Collection.*
 
 ### Pre-Registering Schemas
 
@@ -286,7 +288,7 @@ var PersonModel = factory.create({
         "surname": {
             "type": "string"
         },
-        // Creates a EmployerSchemaModel type under the covers
+        // Creates an EmployerSchemaModel type under the covers
         "employer": {
             "type": "object",
             "properties": {
