@@ -1,3 +1,9 @@
+var Backbone = require('backbone'),
+    _        = require('underscore'),
+    assert   = require('chai').assert;
+
+var BackboneSchema = require('..');
+
 describe('Backbone.Schema', function() {
 
     var SchemaFactory = new Backbone.SchemaFactory(),

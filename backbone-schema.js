@@ -6,6 +6,9 @@
  * For details and documentation: https://github.com/redpie/backbone-schema
  * Depends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone
  */
+var Backbone = require('backbone'),
+    _ = require('underscore');
+
 (function(Backbone, _, undefined) {
 
     function log(){}
