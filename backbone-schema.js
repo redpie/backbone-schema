@@ -558,7 +558,7 @@
                     // Extract any default values from schema and assign to model's default object
                     // Array access is required as 'default' is a reserved word.
                     if(property['default'] !== undefined) {
-                        defaults[name] = property['default'];
+                        defaults[key] = property['default'];
                     }
 
                     // Only types "object" and "array" map to relations
