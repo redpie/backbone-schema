@@ -900,6 +900,85 @@
                     assert.deepEqual(testModel.attributes['test'].models, ["pass"]);
                 });
 
+                it('should set defaults on attributes of type deep object array', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string"
+                                        },
+                                        "values": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "item": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "default": [{
+                                    "value": "pass",
+                                    "values": [
+                                        { "item": "one" },
+                                        { "item": "two" },
+                                        { "item": "three" }
+                                    ]
+                                }]
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'].models.length, 1);
+                    assert.equal(testModel.attributes['test'].models[0].attributes['value'], "pass");
+                    assert.equal(testModel.attributes['test'].models[0].attributes['values'].models[0].attributes['item'], "one");
+                    assert.equal(testModel.attributes['test'].models[0].attributes['values'].models[1].attributes['item'], "two");
+                    assert.equal(testModel.attributes['test'].models[0].attributes['values'].models[2].attributes['item'], "three");
+                });
+
+                it('should set defaults on attributes of type deep value array', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string"
+                                        },
+                                        "values": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "default": [{
+                                    "value": "pass",
+                                    "values": [ "one", "two", "three" ]
+                                }]
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'].models.length, 1);
+                    assert.equal(testModel.attributes['test'].models[0].attributes['value'], "pass");
+                    assert.deepEqual(testModel.attributes['test'].models[0].attributes['values'].models, [ "one", "two", "three" ]);
+                });
+
             });
 
             describe('toJSON', function() {
