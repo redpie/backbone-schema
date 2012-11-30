@@ -737,9 +737,6 @@
                 }
             }
 
-            // Convert attributes to Schema Models and Collections
-            attributes = this._prepareAttributes(attributes, options);
-
             Backbone.Model.prototype.constructor.call(this, attributes, options);
         },
 
