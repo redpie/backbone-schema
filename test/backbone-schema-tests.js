@@ -775,6 +775,133 @@
 
             });
 
+            describe('Defaults', function(){
+
+                it('should set defaults on attributes of type string', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "string",
+                                "default": "pass"
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'], 'pass');
+                });
+
+                it('should set defaults on attributes of type integer', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "integer",
+                                "default": 123
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'], 123);
+                });
+
+                it('should set defaults on attributes of type number', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "number",
+                                "default": 123.45
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'], 123.45);
+                });
+
+                it('should set defaults on attributes of type boolean', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "boolean",
+                                "default": true
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'], true);
+                });
+
+                it('should set defaults on attributes of type object', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "object",
+                                "properties": {
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                },
+                                "default": {"value": "pass"}
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.deepEqual(testModel.attributes['test'].attributes, {"value": "pass"});
+                });
+
+                it('should set defaults on attributes of type object array', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "default": [{"value": "pass"}]
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'].models.length, 1);
+                    assert.deepEqual(testModel.attributes['test'].models[0].attributes, {"value": "pass"});
+                });
+
+                it('should set defaults on attributes of type value array', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": ["pass"]
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['test'].models.length, 1);
+                    assert.deepEqual(testModel.attributes['test'].models, ["pass"]);
+                });
+
+            });
+
             describe('toJSON', function() {
 
                 it('should serialize only schema properties', function() {
