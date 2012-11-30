@@ -979,6 +979,49 @@
                     assert.deepEqual(testModel.attributes['test'].models[0].attributes['values'].models, [ "one", "two", "three" ]);
                 });
 
+                it('should not set defaults on attributes when defined', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "test": {
+                                "type": "string",
+                                "default": "fail"
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel({"test":"pass"});
+                    assert.equal(testModel.attributes['test'], 'pass');
+                });
+
+                it('should set outermost defaults on deep attributes overriding innermost', function(){
+                    var TestModel = SchemaFactory.create({
+                        "type": "object",
+                        "properties": {
+                            "outer": {
+                                "type": "object",
+                                "properties": {
+                                    "inner1": {
+                                        "type": "string",
+                                        "default": "fail"
+                                    },
+                                    "inner2": {
+                                        "type": "string",
+                                        "default": "pass"
+                                    }
+                                },
+                                "default": {
+                                    "inner1": "pass"
+                                }
+                            }
+                        }
+                    });
+
+                    var testModel = new TestModel();
+                    assert.equal(testModel.attributes['outer'].attributes['inner1'], 'pass');
+                    assert.equal(testModel.attributes['outer'].attributes['inner2'], 'pass');
+                });
+
             });
 
             describe('toJSON', function() {
