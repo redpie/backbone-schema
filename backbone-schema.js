@@ -845,7 +845,7 @@
         _prepareAttributes: function(attributes, options) {
             // TODO: If attributes are Models or Collections check the match the schema
             if(attributes !== undefined && this.schema !== undefined && this.schemaRelations !== undefined) {
-                var attrs = [];
+                var attrs = {};
                 _.each(attributes, function(attribute, name) {
                     var Relation = this.schemaRelations[name];
                     if(Relation && !(attribute instanceof Backbone.Model || attribute instanceof Backbone.Collection)) {
