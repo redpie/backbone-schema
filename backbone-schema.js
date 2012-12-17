@@ -981,6 +981,12 @@
         validateAttribute: function(key, value, options) {
             options = options || {};
 
+            // If a property is not defined in schema and additionalProperties is not set to false, then allow anything.
+            // Note: we don't currently support schema based additionalProperties, only boolean values
+            if (this.schema.additionalProperties !== false && (this.schema.properties === undefined || this.schema.properties[key] === undefined)){
+                return [];
+            }
+
             var schemaProperty = this.schema.properties[key],
                 errors = [];
 
