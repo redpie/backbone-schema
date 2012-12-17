@@ -1456,6 +1456,53 @@
                     });
                 });
 
+                describe('additionalProperties', function() {
+
+                    it('should allow any object', function() {
+                        var model = SchemaFactory.createInstance({
+                            "type": "object"
+                        }, {
+                            "a": "1"
+                        });
+
+                        assert.isTrue(model.isValid());
+                    });
+
+                    it('should allow additional properties by default', function() {
+                        var model = SchemaFactory.createInstance({
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                }
+                            }
+                        }, {
+                            "a": "1",
+                            "b": "2"
+                        });
+
+                        assert.isTrue(model.isValid());
+                    });
+
+                    it('should not allow additional properties when additionalProperties is false', function() {
+                        var model = SchemaFactory.createInstance({
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        }, {
+                            "a": "1",
+                            "b": "2"
+                        });
+
+                        assert.isFalse(model.isValid());
+                    });
+
+                });
+
                 describe('minLength', function() {
 
                     beforeEach(function() {
