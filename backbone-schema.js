@@ -529,7 +529,7 @@
                     if (toReturn){
                         return toReturn;
                     }
-                    if (!options || options.validate !== false){
+                    if (!options || options.validation !== false){
                         this.validation = new ValidationModel(this.schema.properties ? _.keys(this.schema.properties) : ['value']);
                     }
                 },
@@ -659,7 +659,7 @@
                     if (toReturn){
                         return toReturn;
                     }
-                    if (!options || options.validate !== false){
+                    if (!options || options.validation !== false){
                         this.validation = new ValidationErrorsCollection();
                     }
                 },

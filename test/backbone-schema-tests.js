@@ -6,15 +6,15 @@
  * For details and documentation: https://github.com/redpie/backbone-schema
  * Depends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone
  */
-(function (factory) {
-  if (typeof exports === 'object') {
-    module.exports = factory(require('underscore'), require('backbone'), require('..'), require('chai'));
-  } else if (typeof define === 'function' && define.amd) {
-    define(['underscore', 'backbone', '..', 'chai'], factory);
-  } else {
-    factory(window._, window.Backbone, window.Backbone.Schema, window.chai);
-  }
-}(function (_, Backbone, BackboneSchema, chai, undefined) {
+(function(factory) {
+    if(typeof exports === 'object') {
+        module.exports = factory(require('underscore'), require('backbone'), require('..'), require('chai'));
+    } else if(typeof define === 'function' && define.amd) {
+        define(['underscore', 'backbone', '..', 'chai'], factory);
+    } else {
+        factory(window._, window.Backbone, window.Backbone.Schema, window.chai);
+    }
+}(function(_, Backbone, BackboneSchema, chai, undefined) {
     var assert = chai.assert;
 
     describe('Backbone.Schema', function() {
@@ -26,216 +26,216 @@
             SchemaTestHelper = BackboneSchema.TestHelper;
 
         var registerSchemas = function() {
-            // Register some test schemas:
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/person",
-                "title": "Person",
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer"
+                // Register some test schemas:
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/person",
+                    "title": "Person",
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        },
+                        "name": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "surname": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "address": {
+                            "$ref": "/backbone.schema/tests/address#"
+                        },
+                        "homePhoneNumber": {
+                            "$ref": "/backbone.schema/tests/phone-number#"
+                        },
+                        "mobilePhoneNumber": {
+                            "$ref": "/backbone.schema/tests/phone-number#"
+                        },
+                        "spouse": {
+                            "$ref": "#"
+                        },
+                        "friends": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#"
+                            }
+                        }
+                    }
+                }, SchemaModel.extend({
+                    fullName: function() {
+                        return this.get('name') + ' ' + this.get('surname');
+                    }
+                }));
+
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/companies",
+                    "title": "Companies",
+                    "type": "array",
+                    "items": {
+                        "$ref": "/backbone.schema/tests/company#"
+                    }
+                }, SchemaCollection.extend({
+                    count: function() {
+                        return this.length;
+                    }
+                }));
+
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/company",
+                    "title": "Company",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "address": {
+                            "extends": "/backbone.schema/tests/address#",
+                            "required": true
+                        },
+                        "phoneNumbers": {
+                            "$ref": "/backbone.schema/tests/phone-numbers#"
+                        },
+                        "employees": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "/backbone.schema/tests/employee#"
+                            }
+                        }
+                    }
+                });
+
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/employee",
+                    "title": "Employee",
+                    "type": "object",
+                    "extends": {
+                        "$ref": "/backbone.schema/tests/person#"
                     },
-                    "name": {
-                        "type": "string",
-                        "required": true
-                    },
-                    "surname": {
-                        "type": "string",
-                        "required": true
-                    },
-                    "address": {
-                        "$ref": "/backbone.schema/tests/address#"
-                    },
-                    "homePhoneNumber": {
-                        "$ref": "/backbone.schema/tests/phone-number#"
-                    },
-                    "mobilePhoneNumber": {
-                        "$ref": "/backbone.schema/tests/phone-number#"
-                    },
-                    "spouse": {
-                        "$ref": "#"
-                    },
-                    "friends": {
-                        "type": "array",
-                        "items": {
+                    "properties": {
+                        "joinDate": {
+                            "type": "date",
+                            "required": true
+                        },
+                        "reportsTo": {
                             "$ref": "#"
                         }
                     }
-                }
-            }, SchemaModel.extend({
-                fullName: function() {
-                    return this.get('name') + ' ' + this.get('surname');
-                }
-            }));
+                });
 
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/companies",
-                "title": "Companies",
-                "type": "array",
-                "items": {
-                    "$ref": "/backbone.schema/tests/company#"
-                }
-            }, SchemaCollection.extend({
-                count: function() {
-                    return this.length;
-                }
-            }));
-
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/company",
-                "title": "Company",
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "required": true
-                    },
-                    "address": {
-                        "extends": "/backbone.schema/tests/address#",
-                        "required": true
-                    },
-                    "phoneNumbers": {
-                        "$ref": "/backbone.schema/tests/phone-numbers#"
-                    },
-                    "employees": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "/backbone.schema/tests/employee#"
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/address",
+                    "title": "Address",
+                    "type": "object",
+                    "properties": {
+                        "streetNumber": {
+                            "type": "string"
+                        },
+                        "addressLine1": {
+                            "type": "string"
+                        },
+                        "addressLine2": {
+                            "type": "string"
+                        },
+                        "town": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "country": {
+                            "type": "string"
                         }
                     }
-                }
-            });
+                });
 
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/employee",
-                "title": "Employee",
-                "type": "object",
-                "extends": {
-                    "$ref": "/backbone.schema/tests/person#"
-                },
-                "properties": {
-                    "joinDate": {
-                        "type": "date",
-                        "required": true
-                    },
-                    "reportsTo": {
-                        "$ref": "#"
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/phone-numbers",
+                    "title": "Phone Numbers",
+                    "type": "array",
+                    "items": {
+                        "$ref": "/backbone.schema/tests/phone-number#"
                     }
-                }
-            });
+                });
 
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/address",
-                "title": "Address",
-                "type": "object",
-                "properties": {
-                    "streetNumber": {
-                        "type": "string"
-                    },
-                    "addressLine1": {
-                        "type": "string"
-                    },
-                    "addressLine2": {
-                        "type": "string"
-                    },
-                    "town": {
-                        "type": "string"
-                    },
-                    "city": {
-                        "type": "string"
-                    },
-                    "country": {
-                        "type": "string"
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/phone-number",
+                    "title": "Phone Number",
+                    "type": "object",
+                    "properties": {
+                        "countryCode": {
+                            "type": "string"
+                        },
+                        "areaCode": {
+                            "type": "string"
+                        },
+                        "number": {
+                            "type": "string"
+                        }
                     }
-                }
-            });
+                });
 
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/phone-numbers",
-                "title": "Phone Numbers",
-                "type": "array",
-                "items": {
-                    "$ref": "/backbone.schema/tests/phone-number#"
-                }
-            });
-
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/phone-number",
-                "title": "Phone Number",
-                "type": "object",
-                "properties": {
-                    "countryCode": {
-                        "type": "string"
-                    },
-                    "areaCode": {
-                        "type": "string"
-                    },
-                    "number": {
-                        "type": "string"
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/validation/required",
+                    "title": "Validation - Required",
+                    "properties": {
+                        "requiredProperty": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "requiredPropertyWithDefault": {
+                            "type": "string",
+                            "required": true,
+                            "default": "Default Value"
+                        },
+                        "explicitOptionalProperty": {
+                            "type": "string",
+                            "required": false
+                        },
+                        "explicitOptionalPropertyWithDefault": {
+                            "type": "string",
+                            "required": false,
+                            "default": "Default Value"
+                        },
+                        "implicitOptionalProperty": {
+                            "type": "string"
+                        },
+                        "implicitOptionalPropertyWithDefault": {
+                            "type": "string",
+                            "default": "Default Value"
+                        }
                     }
-                }
-            });
+                });
 
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/validation/required",
-                "title": "Validation - Required",
-                "properties": {
-                    "requiredProperty": {
-                        "type": "string",
-                        "required": true
-                    },
-                    "requiredPropertyWithDefault": {
-                        "type": "string",
-                        "required": true,
-                        "default": "Default Value"
-                    },
-                    "explicitOptionalProperty": {
-                        "type": "string",
-                        "required": false
-                    },
-                    "explicitOptionalPropertyWithDefault": {
-                        "type": "string",
-                        "required": false,
-                        "default": "Default Value"
-                    },
-                    "implicitOptionalProperty": {
-                        "type": "string"
-                    },
-                    "implicitOptionalPropertyWithDefault": {
-                        "type": "string",
-                        "default": "Default Value"
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/validation/maxLength",
+                    "title": "Validation - maxLength",
+                    "properties": {
+                        "enforcedLengthProperty": {
+                            "type": "string",
+                            "maxLength": 10
+                        },
+                        "anyLengthProperty": {
+                            "type": "string"
+                        }
                     }
-                }
-            });
+                });
 
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/validation/maxLength",
-                "title": "Validation - maxLength",
-                "properties": {
-                    "enforcedLengthProperty": {
-                        "type": "string",
-                        "maxLength": 10
-                    },
-                    "anyLengthProperty": {
-                        "type": "string"
+                SchemaFactory.register({
+                    "id": "/backbone.schema/tests/validation/minLength",
+                    "title": "Validation - minLength",
+                    "properties": {
+                        "enforcedLengthProperty": {
+                            "type": "string",
+                            "minLength": 10
+                        },
+                        "anyLengthProperty": {
+                            "type": "string"
+                        }
                     }
-                }
-            });
-
-            SchemaFactory.register({
-                "id": "/backbone.schema/tests/validation/minLength",
-                "title": "Validation - minLength",
-                "properties": {
-                    "enforcedLengthProperty": {
-                        "type": "string",
-                        "minLength": 10
-                    },
-                    "anyLengthProperty": {
-                        "type": "string"
-                    }
-                }
-            });
-        };
+                });
+            };
 
         var validationTestSchema = {
             "id": "/backbone.schema/tests/validation/",
@@ -284,7 +284,7 @@
             "exclusiveMinimum": {
                 "type": "integer",
                 "minimum": 5,
-                "exclusiveMinimum" : true
+                "exclusiveMinimum": true
             },
             "maximum": {
                 "type": "integer",
@@ -293,7 +293,7 @@
             "exclusiveMaximum": {
                 "type": "integer",
                 "maximum": 5,
-                "exclusiveMaximum" : true
+                "exclusiveMaximum": true
             },
             "divisibleBy": {
                 "type": "integer",
@@ -334,19 +334,19 @@
         };
 
         var ModelValidationTester = function(property, initialValue) {
-            this.property = property.split('$', 1)[0];
+                this.property = property.split('$', 1)[0];
 
-            var attributes = {};
-            if(initialValue) {
-                attributes[this.property] = initialValue;
-            }
+                var attributes = {};
+                if(initialValue) {
+                    attributes[this.property] = initialValue;
+                }
 
-            var schema = _.clone(validationTestSchema);
-            schema.id = schema.id + this.property;
-            schema.properties[this.property] = validationTestSchemaProperties[property];
+                var schema = _.clone(validationTestSchema);
+                schema.id = schema.id + this.property;
+                schema.properties[this.property] = validationTestSchemaProperties[property];
 
-            this.model = new(SchemaFactory.create(schema))(attributes);
-        };
+                this.model = new(SchemaFactory.create(schema))(attributes);
+            };
 
         ModelValidationTester.prototype = {
 
@@ -391,12 +391,12 @@
         var tester;
 
         var register = function(schema, model) {
-            SchemaFactory.register(schema, model);
-        };
+                SchemaFactory.register(schema, model);
+            };
         var parse = function(schema) {
-            register(schema);
-            return SchemaFactory.parse(schema, schema);
-        };
+                register(schema);
+                return SchemaFactory.parse(schema, schema);
+            };
 
         var schema;
 
@@ -547,7 +547,9 @@
                         }
                     }
                 }, {
-                    collection: [{ name: "test" }]
+                    collection: [{
+                        name: "test"
+                    }]
                 });
                 assert.instanceOf(root, SchemaModel);
 
@@ -593,7 +595,9 @@
                         }
                     }
                 }, {
-                    collection: [{ name: "test" }]
+                    collection: [{
+                        name: "test"
+                    }]
                 });
                 assert.instanceOf(root, SchemaModel);
 
@@ -775,9 +779,9 @@
 
             });
 
-            describe('Defaults', function(){
+            describe('Defaults', function() {
 
-                it('should set defaults on attributes of type string', function(){
+                it('should set defaults on attributes of type string', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -792,7 +796,7 @@
                     assert.equal(testModel.attributes['test'], 'pass');
                 });
 
-                it('should set defaults on attributes of type integer', function(){
+                it('should set defaults on attributes of type integer', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -807,7 +811,7 @@
                     assert.equal(testModel.attributes['test'], 123);
                 });
 
-                it('should set defaults on attributes of type number', function(){
+                it('should set defaults on attributes of type number', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -822,7 +826,7 @@
                     assert.equal(testModel.attributes['test'], 123.45);
                 });
 
-                it('should set defaults on attributes of type boolean', function(){
+                it('should set defaults on attributes of type boolean', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -837,7 +841,7 @@
                     assert.equal(testModel.attributes['test'], true);
                 });
 
-                it('should set defaults on attributes of type object', function(){
+                it('should set defaults on attributes of type object', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -848,16 +852,20 @@
                                         "type": "string"
                                     }
                                 },
-                                "default": {"value": "pass"}
+                                "default": {
+                                    "value": "pass"
+                                }
                             }
                         }
                     });
 
                     var testModel = new TestModel();
-                    assert.deepEqual(testModel.attributes['test'].attributes, {"value": "pass"});
+                    assert.deepEqual(testModel.attributes['test'].attributes, {
+                        "value": "pass"
+                    });
                 });
 
-                it('should set defaults on attributes of type object array', function(){
+                it('should set defaults on attributes of type object array', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -871,17 +879,21 @@
                                         }
                                     }
                                 },
-                                "default": [{"value": "pass"}]
+                                "default": [{
+                                    "value": "pass"
+                                }]
                             }
                         }
                     });
 
                     var testModel = new TestModel();
                     assert.equal(testModel.attributes['test'].models.length, 1);
-                    assert.deepEqual(testModel.attributes['test'].models[0].attributes, {"value": "pass"});
+                    assert.deepEqual(testModel.attributes['test'].models[0].attributes, {
+                        "value": "pass"
+                    });
                 });
 
-                it('should set defaults on attributes of type value array', function(){
+                it('should set defaults on attributes of type value array', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -900,7 +912,7 @@
                     assert.deepEqual(testModel.attributes['test'].models, ["pass"]);
                 });
 
-                it('should set defaults on attributes of type deep object array', function(){
+                it('should set defaults on attributes of type deep object array', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -927,11 +939,13 @@
                                 },
                                 "default": [{
                                     "value": "pass",
-                                    "values": [
-                                        { "item": "one" },
-                                        { "item": "two" },
-                                        { "item": "three" }
-                                    ]
+                                    "values": [{
+                                        "item": "one"
+                                    }, {
+                                        "item": "two"
+                                    }, {
+                                        "item": "three"
+                                    }]
                                 }]
                             }
                         }
@@ -945,7 +959,7 @@
                     assert.equal(testModel.attributes['test'].models[0].attributes['values'].models[2].attributes['item'], "three");
                 });
 
-                it('should set defaults on attributes of type deep value array', function(){
+                it('should set defaults on attributes of type deep value array', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -967,7 +981,7 @@
                                 },
                                 "default": [{
                                     "value": "pass",
-                                    "values": [ "one", "two", "three" ]
+                                    "values": ["one", "two", "three"]
                                 }]
                             }
                         }
@@ -976,10 +990,10 @@
                     var testModel = new TestModel();
                     assert.equal(testModel.attributes['test'].models.length, 1);
                     assert.equal(testModel.attributes['test'].models[0].attributes['value'], "pass");
-                    assert.deepEqual(testModel.attributes['test'].models[0].attributes['values'].models, [ "one", "two", "three" ]);
+                    assert.deepEqual(testModel.attributes['test'].models[0].attributes['values'].models, ["one", "two", "three"]);
                 });
 
-                it('should not set defaults on attributes when defined', function(){
+                it('should not set defaults on attributes when defined', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -990,11 +1004,13 @@
                         }
                     });
 
-                    var testModel = new TestModel({"test":"pass"});
+                    var testModel = new TestModel({
+                        "test": "pass"
+                    });
                     assert.equal(testModel.attributes['test'], 'pass');
                 });
 
-                it('should set outermost defaults on deep attributes overriding innermost', function(){
+                it('should set outermost defaults on deep attributes overriding innermost', function() {
                     var TestModel = SchemaFactory.create({
                         "type": "object",
                         "properties": {
@@ -1396,6 +1412,50 @@
             });
 
             describe('Validation', function() {
+
+                describe('Initialization', function() {
+
+                    var Model;
+                    beforeEach(function() {
+                        Model = SchemaFactory.create({
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        });
+                    });
+
+                    it('should have a validation model', function() {
+                        var model = new Model({});
+                        assert.isDefined(model.validation);
+                    });
+
+                    it('should validate model by dafault', function() {
+                        var model = new Model({
+                            "name": 123
+                        });
+                        assert.isFalse(model.isValid()); // "name" should be a string
+                    });
+
+                    it('should not have a validation model', function() {
+                        var model = new Model({}, {
+                            validation: false
+                        });
+                        assert.isUndefined(model.validation);
+                    });
+
+                    it('should not validate model when options.validation is false', function() {
+                        var model = new Model({
+                            "name": 123
+                        }, {
+                            validation: false
+                        });
+                        assert.isTrue(model.isValid()); // "name" should be a string, but we don't care
+                    });
+                });
+
                 describe('minLength', function() {
 
                     beforeEach(function() {
@@ -1650,6 +1710,62 @@
             });
 
             describe('Validation', function() {
+
+                describe('Initialization', function() {
+
+                    var Collection;
+                    beforeEach(function() {
+                        Collection = SchemaFactory.create({
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "minItems": 2
+                        });
+                    });
+
+                    it('should have a validation model', function() {
+                        var collection = new Collection({});
+                        assert.isDefined(collection.validation);
+                    });
+
+                    it('should validate collection by dafault (valid)', function() {
+                        var collection = new Collection([{
+                            "name": "one"
+                        }, {
+                            "name": "two"
+                        }]);
+                        assert.isTrue(collection.isValid());
+                    });
+
+                    it('should validate collection by dafault (invalid)', function() {
+                        var collection = new Collection([{
+                            "name": "one"
+                        }]);
+                        assert.isFalse(collection.isValid()); // Minimum of 2 items is required
+                    });
+
+                    it('should not have a validation model', function() {
+                        var collection = new Collection({}, {
+                            validation: false
+                        });
+                        assert.isUndefined(collection.validation);
+                    });
+
+                    it('should not validate collection when options.validation is false', function() {
+                        var collection = new Collection([{
+                            "name": "one"
+                        }], {
+                            validation: false
+                        });
+                        assert.isTrue(collection.isValid()); // Minimum of 2 items is required, but we don't care
+                    });
+                });
 
                 describe('minItems', function() {
 
@@ -2375,7 +2491,7 @@
 
                         it.skip('should return true when value is valid date-time', function() {
                             // From http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
-                            _.each(['2009-12T12:34', '2009', '2009-05-19', '2009-05-19', '20090519', '2009123', '2009-05', '2009-123', '2009-222', '2009-001', '2009-W01-1', '2009-W51-1', '2009-W511', '2009-W33', '2009W511', '2009-05-19', '2009-05-19 00:00', '2009-05-19 14', '2009-05-19 14:31', '2009-05-19 14:39:22', '2009-05-19T14:39Z', '2009-W21-2', '2009-W21-2T01:22', '2009-139', '2009-05-19 14:39:22-06:00', '2009-05-19 14:39:22+0600', '2009-05-19 14:39:22-01', '20090621T0545Z', '2007-04-06T00:00', '2007-04-05T24:00', '2010-02-18T16:23:48.5', '2010-02-18T16:23:48,444', '2010-02-18T16:23:48,3-06:00', '2010-02-18T16:23.4', '2010-02-18T16:23,25', '2010-02-18T16:23.33+0600', '2010-02-18T16.23334444', '2010-02-18T16,2283', '2009-05-19 143922.500', '2009-05-19 1439,55'], function(date){
+                            _.each(['2009-12T12:34', '2009', '2009-05-19', '2009-05-19', '20090519', '2009123', '2009-05', '2009-123', '2009-222', '2009-001', '2009-W01-1', '2009-W51-1', '2009-W511', '2009-W33', '2009W511', '2009-05-19', '2009-05-19 00:00', '2009-05-19 14', '2009-05-19 14:31', '2009-05-19 14:39:22', '2009-05-19T14:39Z', '2009-W21-2', '2009-W21-2T01:22', '2009-139', '2009-05-19 14:39:22-06:00', '2009-05-19 14:39:22+0600', '2009-05-19 14:39:22-01', '20090621T0545Z', '2007-04-06T00:00', '2007-04-05T24:00', '2010-02-18T16:23:48.5', '2010-02-18T16:23:48,444', '2010-02-18T16:23:48,3-06:00', '2010-02-18T16:23.4', '2010-02-18T16:23,25', '2010-02-18T16:23.33+0600', '2010-02-18T16.23334444', '2010-02-18T16,2283', '2009-05-19 143922.500', '2009-05-19 1439,55'], function(date) {
                                 assert.isTrue(SchemaTestHelper.Validators.format(date, 'date-time'));
                             });
 
@@ -2392,7 +2508,7 @@
                     describe('color', function() {
 
                         it('should return true when value is valid color', function() {
-                            _.each(['#000000', '#FF0000', '#FFFFFF', 'red', 'green', 'bisque'], function(color){
+                            _.each(['#000000', '#FF0000', '#FFFFFF', 'red', 'green', 'bisque'], function(color) {
                                 assert.isTrue(SchemaTestHelper.Validators.format(color, 'color'), color);
                             });
 
@@ -2409,14 +2525,14 @@
                     describe('uri', function() {
 
                         it('should return true when value is valid uri', function() {
-                            _.each(['http://jargon.io','http://pix.ie','https://www.bt.co.uk:80'], function(uri){
+                            _.each(['http://jargon.io', 'http://pix.ie', 'https://www.bt.co.uk:80'], function(uri) {
                                 assert.isTrue(SchemaTestHelper.Validators.format(uri, 'uri'), uri);
                             });
 
                         });
 
                         it('should return false when value is invalid uri', function() {
-                            _.each(['www.tcd.ie','https://', '//redpie.com'], function(uri) {
+                            _.each(['www.tcd.ie', 'https://', '//redpie.com'], function(uri) {
                                 assert.isFalse(SchemaTestHelper.Validators.format(uri, 'uri'), uri);
                             });
                         });
