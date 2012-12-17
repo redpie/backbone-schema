@@ -410,16 +410,16 @@ var PersonModel = factory.create({
 var person = new PersonModel();
 
 // the address attribute starts off undefined
-var hasAddressModel = person.attributes['address'] === undefined; // true
+var isAddressUndefined = person.attributes['address'] === undefined; // true
 // returns a new AddressSchemaModel
 person.get('address');
 // You can now see the address attribute is initialized
-hasAddressModel = person.attributes['address'] === undefined; // false
+isAddressUndefined = person.attributes['address'] === undefined; // false
 
 // Same for collections:
-var hasPhoneNumbers = person.attributes['phoneNumbers'] === undefined; // true
+var isPhoneNumbersUndefined = person.attributes['phoneNumbers'] === undefined; // true
 person.get('phoneNumbers');
-hasPhoneNumbers = person.attributes['phoneNumbers'] === undefined; // false
+isPhoneNumbersUndefined = person.attributes['phoneNumbers'] === undefined; // false
 ```
 
 ### Value Based Collections
