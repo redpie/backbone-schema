@@ -17,6 +17,94 @@
 }(function(_, Backbone, undefined) {
     var Schema = {};
 
+    /** i18n by @dlfiess - Internalization  **/
+
+    //Current Active Language, default to en
+    var _lng = "en";
+
+    //default dictionaries
+    var _dict = {
+        'en': {
+            'property not allowed': '%(property) is not allowed',
+            'required field': '%(title) is a required field',
+            'should be a model': '%(title) should be a model',
+            'should be a collection': '%(title) should be a collection',
+            'should be a string': '%(title) should be a string',
+            'should be a number': '%(title) should be a number',
+            'should be a integer': '%(title) should be a integer',
+            'should be a boolean': '%(title) should be a boolean',
+            'should be null': '%(title) should be null',
+            'Unknown Schema type': 'Unknown Schema type: ',
+            'is invalid': '%(title) is invalid',
+            'maxLength': '%(title) may not be longer than %(maxLength)',
+            'minLength': '%(title) must be longer than %(minLength)',
+            'format mismatch': '%(title) does not match %(format)',
+            'minimum': '%(title) may not be less than %(minimum)',
+            'maximum': '%(title) must be less than %(maximum)',
+            'not divisible': '%(title) is not divisible by %(divisibleBy)',
+            'minItems': 'Minimum of %(count) %(title) required',
+            'maxItems': 'Maximum of %(count) %(title) allowed',
+            'uniqueItems': 'Duplicate %(title) are not allowed'
+        },
+        'es': {
+            'property not allowed': 'No se permite la propiedad %(property)',
+            'required field': 'El campo %(title) es obligatorio',
+            'should be a model': '%(title) debería ser un modelo',
+            'should be a collection': '%(title) debería ser una colección',
+            'should be a string': '%(title) debería ser una cadena',
+            'should be a number': '%(title) debería ser un número',
+            'should be a integer': '%(title) debería ser un entero',
+            'should be a boolean': '%(title) debería ser boleano',
+            'should be null': '%(title) debería ser null',
+            'Unknown Schema type': 'Tipo de Esquema desconocido: ',
+            'is invalid': '%(title) es invalido',
+            'maxLength': '%(title) no debe tener más de %(maxLength) caracteres',
+            'minLength': '%(title) debe tener al menos %(minLength) caracteres',
+            'format mismatch': '%(title) debe tener el formato: %(format)',
+            'minimum': '%(title) no debe ser mayor que %(minimum)',
+            'maximum': '%(title) debe ser menor que %(maximum)',
+            'not divisible': '%(title) no es divisible por %(divisibleBy)',
+            'minItems': 'Se requieren al menos %(count) %(title)',
+            'maxItems': 'Se permitern hasta %(count) %(title)',
+            'uniqueItems': 'No se permiten duplicados en %(title)'
+        }
+    };
+    
+    /**
+     * Add a language
+     * @param  {String} lng Language Code
+     * @param {[object]} dict The format of dict : {"key1":"text1", "key2":"text2",...}
+     * Note: key can contain spaces
+     */
+    function addLanguage(lng, dict){
+        //if language does not exists create it
+        _dict[lng] = _dict[lng] || {};
+
+        for (var key in dict) {
+            _dict[lng][key] = dict[key];
+        }
+    }
+    
+    /**
+     * Translate a text
+     * @param  {String} text text to be translated
+     * @param {String} lng  Optional Language to translate to.
+     */
+    function translate(text,lng) {
+        //if user specified lng translate to that, otherwise to global(scoped) _lng
+        lng = lng||_lng;
+        if (_dict[lng])
+            return _dict[lng][text] || text;
+        else
+            return text;
+    }
+
+    //Shortcut to translate(text, lng)
+    var t = translate;
+
+    /** i18n by @dlfiess - Internalization  **/
+
+
     function log() {}
 
     function toObject(key, value) {
@@ -996,6 +1084,9 @@
                 return [];
             }
 
+            //Set default i18n language
+            _lng = options.language || _lng;
+
             var schemaProperty = this.schema.properties[key],
                 errors = [];
 
@@ -1006,7 +1097,7 @@
                     errors.push({
                         level: 'error',
                         rule: 'type',
-                        message: '%(property) is not allowed',
+                        message: t('property not allowed'),
                         values: {
                             'property': key
                         }
@@ -1028,7 +1119,7 @@
                     errors.push({
                         level: 'error',
                         rule: 'required',
-                        message: '%(title) is a required field',
+                        message: t('required field'),
                         values: {
                             'title': schemaTitle
                         }
@@ -1063,7 +1154,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be a model',
+                            message: t('should be a model'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1076,7 +1167,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be a collection',
+                            message: t('should be a collection'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1089,7 +1180,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be a string',
+                            message: t('should be a string'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1102,7 +1193,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be a number',
+                            message: t('should be a number'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1115,7 +1206,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be a integer',
+                            message: t('should be a integer'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1128,7 +1219,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be a boolean',
+                            message: t('should be a boolean'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1141,7 +1232,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'type',
-                            message: '%(title) should be null',
+                            message: t('should be null'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1153,7 +1244,7 @@
                     break;
 
                 default:
-                    throw new Error('Unknown Schema type: ' + schemaType);
+                    throw new Error(t('Unknown Schema type') + schemaType);
                 }
 
                 if(isRelation) {
@@ -1165,7 +1256,7 @@
                             errors.push({
                                 level: 'error',
                                 rule: 'relation',
-                                message: '%(title) is invalid',
+                                message: t('is invalid'),
                                 values: {
                                     'title': schemaTitle
                                 }
@@ -1176,7 +1267,7 @@
                             errors.push({
                                 level: 'error',
                                 rule: 'relation',
-                                message: '%(title) is invalid',
+                                message: t('is invalid'),
                                 values: {
                                     'title': schemaTitle
                                 }
@@ -1191,7 +1282,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'maxLength',
-                            message: '%(title) may not be longer than %(maxLength)',
+                            message: t('maxLength'),
                             values: {
                                 'title': schemaTitle,
                                 'maxLength': schemaProperty.maxLength
@@ -1204,7 +1295,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'minLength',
-                            message: '%(title) must be be longer than %(minLength)',
+                            message: t('minLength'),
                             values: {
                                 'title': schemaTitle,
                                 'minLength': schemaProperty.minLength
@@ -1217,7 +1308,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'format',
-                            message: '%(title) does not match %(format)',
+                            message: t('format mismatch'),
                             values: {
                                 'title': schemaTitle,
                                 'format': schemaProperty.format
@@ -1230,7 +1321,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'pattern',
-                            message: '%(title) is invalid',
+                            message: t('is invalid'),
                             values: {
                                 'title': schemaTitle
                             }
@@ -1243,7 +1334,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'minimum',
-                            message: '%(title) may not be less than %(minimum)',
+                            message: t('minimum'),
                             values: {
                                 'title': schemaTitle,
                                 'minimum': schemaProperty.minimum
@@ -1256,7 +1347,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'maximum',
-                            message: '%(title) may not be less than %(maximum)',
+                            message: t('maximum'),
                             values: {
                                 'title': schemaTitle,
                                 'maximum': schemaProperty.maximum
@@ -1269,7 +1360,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'divisibleBy',
-                            message: '%(title) is not divisible by %(divisibleBy)',
+                            message: t('not divisible'),
                             values: {
                                 'title': schemaTitle,
                                 'divisibleBy': schemaProperty.divisibleBy
@@ -1404,11 +1495,15 @@
             var schema = this.schema;
             var errors = [];
 
+            options = options || {};
+            //Set default i18n language
+            _lng = options.language || _lng;
+
             if(schema.minItems && !Validators.minItems(this.models, schema.minItems)) {
                 errors.push({
                     level: 'error',
                     rule: 'minItems',
-                    message: 'Minimum of %(count) %(title) required',
+                    message: t('minItems'),
                     values: {
                         'title': schema.title,
                         'count': schema.minItems
@@ -1420,7 +1515,7 @@
                 errors.push({
                     level: 'error',
                     rule: 'maxItems',
-                    message: 'Maximum of %(count) %(title) allowed',
+                    message: t('maxItems'),
                     values: {
                         'title': schema.title,
                         'count': schema.maxItems
@@ -1434,7 +1529,7 @@
                 errors.push({
                     level: 'error',
                     rule: 'uniqueItems',
-                    message: 'Duplicate %(title) are not allowed',
+                    message: t('uniqueItems'),
                     values: {
                         'title': schema.title
                     }
@@ -1461,13 +1556,16 @@
         _validateModels: function(options) {
             var errors = [];
 
+            //Set default i18n language
+            _lng = options.language || _lng;
+
             if(_.any(this.models, function(model) {
                 return !model.isValid(undefined, options);
             })) {
                 errors.push({
                     level: 'error',
                     rule: 'relation',
-                    message: '%(title) is invalid',
+                    message: t('is invalid'),
                     values: {
                         'title': this.schema.title
                     }
@@ -1660,6 +1758,9 @@
 
             var errors = [];
 
+            //Set default i18n language
+            _lng = options.language || _lng;
+
             var validator;
             switch(this.schema.type) {
             case 'string':
@@ -1684,7 +1785,7 @@
                     errors.push({
                         level: 'error',
                         rule: 'value',
-                        message: '%(title) is invalid',
+                        message: t('is invalid'),
                         values: {
                             'title': schema.title
                         }
