@@ -363,6 +363,8 @@
                     this.model.set(this.property, value);
                 }
 
+                this.model.validate();
+
                 var errors = this.model.validation.get(this.property);
 
                 if(errors === undefined || errors.length === 0) {
