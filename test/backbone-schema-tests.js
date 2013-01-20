@@ -1442,7 +1442,7 @@
                         assert.isDefined(model.validation);
                     });
 
-                    it('should validate model by dafault', function() {
+                    it('should validate model by default', function() {
                         var model = new Model({
                             "name": 123
                         });
