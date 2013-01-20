@@ -1204,7 +1204,7 @@
                         errors.push({
                             level: 'error',
                             rule: 'minLength',
-                            message: '%(title) must be be longer than %(minLength)',
+                            message: '%(title) must be longer than %(minLength)',
                             values: {
                                 'title': schemaTitle,
                                 'minLength': schemaProperty.minLength
