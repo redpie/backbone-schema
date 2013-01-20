@@ -281,6 +281,10 @@
                 "type": "integer",
                 "minimum": 5
             },
+            "minimum0": {
+                "type": "integer",
+                "minimum": 0
+            },
             "exclusiveMinimum": {
                 "type": "integer",
                 "minimum": 5,
@@ -289,6 +293,10 @@
             "maximum": {
                 "type": "integer",
                 "maximum": 5
+            },
+            "maximum0": {
+                "type": "integer",
+                "maximum": 0
             },
             "exclusiveMaximum": {
                 "type": "integer",
@@ -1545,20 +1553,38 @@
 
                 describe('minimum', function() {
 
-                    beforeEach(function() {
-                        tester = new ModelValidationTester("minimum");
+                    describe('', function() {
+
+                        beforeEach(function() {
+                            tester = new ModelValidationTester("minimum");
+                        });
+
+                        it('should validate when minimum constraint is met', function() {
+                            assert.isTrue(tester.isValid(6));
+                        });
+
+                        it('should validate when minimum constraint is not met', function() {
+                            assert.isFalse(tester.isValid(4));
+                        });
+
+                        it('should return appropriate errors when minimum constraint is not met', function() {
+                            assert.isTrue(tester.testModelErrors(4));
+                        });
                     });
 
-                    it('should validate when minimum constraint is met', function() {
-                        assert.isTrue(tester.isValid(6));
-                    });
+                    describe('', function() {
 
-                    it('should validate when minimum constraint is not met', function() {
-                        assert.isFalse(tester.isValid(4));
-                    });
+                        beforeEach(function() {
+                            tester = new ModelValidationTester("minimum0");
+                        });
 
-                    it('should return appropriate errors when minimum constraint is not met', function() {
-                        assert.isTrue(tester.testModelErrors(4));
+                        it('should validate when minimum constraint is 0 and is met', function() {
+                            assert.isTrue(tester.isValid(0));
+                        });
+
+                        it('should validate when minimum constraint is 0 and is not met', function() {
+                            assert.isFalse(tester.isValid(-1));
+                        });
                     });
                 });
 
@@ -1583,20 +1609,38 @@
 
                 describe('maximum', function() {
 
-                    beforeEach(function() {
-                        tester = new ModelValidationTester("maximum");
+                    describe('', function() {
+
+                        beforeEach(function() {
+                            tester = new ModelValidationTester("maximum");
+                        });
+
+                        it('should validate when maximum constraint is met', function() {
+                            assert.isTrue(tester.isValid(5));
+                        });
+
+                        it('should not validate when maximum constraint is not met', function() {
+                            assert.isFalse(tester.isValid(6));
+                        });
+
+                        it('should return appropriate errors when maximum constraint is not met', function() {
+                            assert.isTrue(tester.testModelErrors(6));
+                        });
                     });
 
-                    it('should validate when maximum constraint is met', function() {
-                        assert.isTrue(tester.isValid(5));
-                    });
+                    describe('', function() {
 
-                    it('should not validate when maximum constraint is not met', function() {
-                        assert.isFalse(tester.isValid(6));
-                    });
+                        beforeEach(function() {
+                            tester = new ModelValidationTester("maximum0");
+                        });
 
-                    it('should return appropriate errors when maximum constraint is not met', function() {
-                        assert.isTrue(tester.testModelErrors(6));
+                        it('should validate when maximum constraint is 0 is met', function() {
+                            assert.isTrue(tester.isValid(0));
+                        });
+
+                        it('should not validate when maximum constraint is 0 is not met', function() {
+                            assert.isFalse(tester.isValid(1));
+                        });
                     });
                 });
 

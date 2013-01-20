@@ -1187,7 +1187,7 @@
                 } else if(isString) {
 
                     // maxLength validator
-                    if(schemaProperty.maxLength && !Validators.maxLength(value, schemaProperty.maxLength)) {
+                    if(schemaProperty.maxLength != undefined && !Validators.maxLength(value, schemaProperty.maxLength)) {
                         errors.push({
                             level: 'error',
                             rule: 'maxLength',
@@ -1200,7 +1200,7 @@
                     }
 
                     // minLength validator
-                    if(schemaProperty.minLength && !Validators.minLength(value, schemaProperty.minLength)) {
+                    if(schemaProperty.minLength != undefined && !Validators.minLength(value, schemaProperty.minLength)) {
                         errors.push({
                             level: 'error',
                             rule: 'minLength',
@@ -1213,7 +1213,7 @@
                     }
 
                     // format validator
-                    if(schemaProperty.format && !Validators.format(value, schemaProperty.format)) {
+                    if(schemaProperty.format != undefined && !Validators.format(value, schemaProperty.format)) {
                         errors.push({
                             level: 'error',
                             rule: 'format',
@@ -1226,7 +1226,7 @@
                     }
 
                     // pattern validator
-                    if(schemaProperty.pattern && !Validators.pattern(value, schemaProperty.pattern)) {
+                    if(schemaProperty.pattern != undefined && !Validators.pattern(value, schemaProperty.pattern)) {
                         errors.push({
                             level: 'error',
                             rule: 'pattern',
@@ -1239,7 +1239,7 @@
 
                 } else if(isNumber) {
                     // minimum validator
-                    if(schemaProperty.minimum && !Validators.minimum(value, schemaProperty.minimum, schemaProperty.exclusiveMinimum)) {
+                    if(schemaProperty.minimum != undefined && !Validators.minimum(value, schemaProperty.minimum, schemaProperty.exclusiveMinimum)) {
                         errors.push({
                             level: 'error',
                             rule: 'minimum',
@@ -1252,7 +1252,7 @@
                     }
 
                     // maximum validator
-                    if(schemaProperty.maximum && !Validators.maximum(value, schemaProperty.maximum, schemaProperty.exclusiveMaximum)) {
+                    if(schemaProperty.maximum != undefined && !Validators.maximum(value, schemaProperty.maximum, schemaProperty.exclusiveMaximum)) {
                         errors.push({
                             level: 'error',
                             rule: 'maximum',
@@ -1265,7 +1265,7 @@
                     }
 
                     // divisibleBy validator
-                    if(schemaProperty.divisibleBy && !Validators.divisibleBy(value, schemaProperty.divisibleBy)) {
+                    if(schemaProperty.divisibleBy != undefined && !Validators.divisibleBy(value, schemaProperty.divisibleBy)) {
                         errors.push({
                             level: 'error',
                             rule: 'divisibleBy',
@@ -1404,7 +1404,7 @@
             var schema = this.schema;
             var errors = [];
 
-            if(schema.minItems && !Validators.minItems(this.models, schema.minItems)) {
+            if(schema.minItems != undefined && !Validators.minItems(this.models, schema.minItems)) {
                 errors.push({
                     level: 'error',
                     rule: 'minItems',
@@ -1416,7 +1416,7 @@
                 });
             }
 
-            if(schema.maxItems && !Validators.maxItems(this.models, schema.maxItems)) {
+            if(schema.maxItems != undefined && !Validators.maxItems(this.models, schema.maxItems)) {
                 errors.push({
                     level: 'error',
                     rule: 'maxItems',
@@ -1428,7 +1428,7 @@
                 });
             }
 
-            if(schema.uniqueItems && !Validators.uniqueItems(this.models, function(model) {
+            if(schema.uniqueItems != undefined && !Validators.uniqueItems(this.models, function(model) {
                 return model.cid;
             })) {
                 errors.push({
