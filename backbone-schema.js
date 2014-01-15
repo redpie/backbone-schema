@@ -1161,7 +1161,7 @@
                     // Only validate relations when options.deep is specified
                     if(options.deep === true) {
 
-                        if(isModel && !value.isValid(undefined, options)) {
+                        if(isModel && !value.isValid(options)) {
                             errors.push({
                                 level: 'error',
                                 rule: 'relation',
@@ -1462,7 +1462,7 @@
             var errors = [];
 
             if(_.any(this.models, function(model) {
-                return !model.isValid(undefined, options);
+                return !model.isValid(options);
             })) {
                 errors.push({
                     level: 'error',
