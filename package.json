@@ -10,9 +10,9 @@
     "underscore": ">=1.4.2"
   },
   "devDependencies": {
-    "mocha": "1.6.0",
-    "chai": "1.4.0",
-    "sinon": "1.5.2"
+    "mocha": ">=1.6.0",
+    "chai": ">=1.4.0",
+    "sinon": ">=1.5.2"
   },
   "scripts": {
       "test": "./node_modules/.bin/mocha --recursive --reporter spec --ui bdd test/*.js"

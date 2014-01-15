@@ -1724,6 +1724,38 @@
                         assert.isTrue(tester.testModelErrors("a2c"));
                     });
                 });
+
+                describe('deep', function() {
+
+                    var model;
+                    beforeEach(function() {
+                        model = SchemaFactory.createInstance({
+                            'type' : 'object',
+                            'properties' : {
+                                'nested'  : {
+                                    'type' : 'object',
+                                    'properties' : {
+                                        'id' : {
+                                            'type' : 'number'
+                                        }
+                                    }
+                                }
+                            }
+                        }, {
+                            nested : {
+                                id : 'string'
+                            }
+                        });
+                    });
+
+                    it('should validate when `deep` option is not set', function() {
+                        assert.isTrue(model.isValid());
+                    });
+
+                    it('should not validate when `deep` option is set', function() {
+                        assert.isFalse(model.isValid({deep:true}));
+                    });
+                });
             });
         });
 
@@ -2040,7 +2072,7 @@
 
                     it('should not validate when minItems constraint is not met', function() {
                         var collection = tester.model.get('minItems');
-                        collection.add(1);
+                        collection.add([1]);
                         assert.isFalse(tester.isValid(undefined, {
                             deep: true
                         }));
@@ -2048,7 +2080,7 @@
 
                     it('should return appropriate errors when minItems constraint is not met', function() {
                         var collection = tester.model.get('minItems');
-                        collection.add(1);
+                        collection.add([1]);
                         assert.isTrue(tester.testCollectionErrors(undefined, {
                             deep: true
                         }));
