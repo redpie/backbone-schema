@@ -1501,10 +1501,6 @@
             var toReturn;
             if(this.schema) {
                 var models = this.models;
-                if(models.length === 0) {
-                    return undefined;
-                }
-
                 toReturn = [];
                 _.each(models, function(model) {
                     var value = model.toJSON(options);
