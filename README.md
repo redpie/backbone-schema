@@ -1,3 +1,7 @@
+NOTE
+====
+This is a patched and npm-published version of https://github.com/redpie/backbone-schema
+
 Backbone.Schema
 ===============
 

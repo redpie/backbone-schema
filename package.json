@@ -1,9 +1,8 @@
 {
-  "name"          : "backbone-schema",
-  "description"   : "Create Backbone models and collections from JSON Schema",
+  "name"          : "backbone-json-schema",
+  "description"   : "A patched and npm published fork of https://github.com/redpie/backbone-schema --- Create Backbone models and collections from JSON Schema",
   "keywords"      : ["Backbone", "schema", "json", "jsonschema", "nested", "model", "collection"],
-  "repository"    : "git://github.com/redpie/backbone-schema.git",
-  "author"        : "Redpie",
+  "repository"    : "git://github.com/Reggino/backbone-json-schema.git",
   "contributors"  : "Listed at <https://github.com/redpie/backbone-schema/graphs/contributors>",
   "dependencies"  : {
     "backbone":   ">=0.9.2",
