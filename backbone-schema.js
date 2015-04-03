@@ -887,7 +887,7 @@
             if(this.schema) {
                 _.each(this.schema.properties, function(property, name) {
                     var attribute = this.attributes[name];
-                    if(attribute) {
+                    if ([undefined, null].indexOf(attribute) === -1) {
                         var value;
                         if(this.schemaRelations[name]) {
                             value = attribute.toJSON(options);
